@@ -1,0 +1,35 @@
+[{
+    "title":"India Hacks",
+    "description":"IndiaHacks is the biggest confluence of developers across domains and interests under a single platform.It's your chance to demonstrate your programming skills, while competing with the best developers in the world.",
+     "urlToImage": "https://hackerearth.global.ssl.fastly.net/static/hackerearth/images/indiahacks/2017/share_image.jpg",
+     "url" : "https://www.hackerearth.com/indiahacks-2017/",
+     "date":"30-09-2017"
+    },
+    {
+        "title":"Smart India Hackathon",
+    "description":"Smart India Hackathon 2017 is a pan India 36 hour nonstop digital programming competition. The participating teams will simultaneously compete from across 33 locations in India to offer digital yet sustainable innovative solutions to solve real time challenges faced by the nation. It will harness the creativity of millions of bright young minds like you.",
+     "urlToImage": "https://dkzstslcvgwbc.cloudfront.net/sites/default/files/pages/cover_image/sih2017-home.jpg",
+     "url" : "https://innovate.mygov.in/sih2017/",
+     "date":"28-07-2017"
+     },
+     {
+        "title":"Interview Prep Bootcamp",
+        "description":"Tone up your programming and interviewing skills with the fast-paced course, designed to help students in preparing for interviews in software companies. Lectures on all important topics as Operating Systems, DBMS and System Design, resume building to get shortlisted in one go, mock interviews with industry experts to make students get acclimatized to the rigorous selection process of companies like Amazon, Google etc.",
+        "urlToImage":"https://pbs.twimg.com/profile_images/749503540184350720/WUQ7-NHv.jpg",
+        "url":"https://codingblocks.com/bootcamps/interviewprep.html",
+        "date":"22-07-2017"
+        },
+        {
+          "title":"Competetitive Coding Bootcamp",
+        "description":"Hone your Competittive Programming skills with our 1-week bootcamp on Competititive Coding. The aim of competitive programming is to write source code of computer programs which are able to solve given problems. A vast majority of problems appearing in programming contests are mathematical or logical in nature. Typical such tasks belong to one of the following categories: combinatorics, number theory, graph theory, geometry, string analysis and data structures. Such problems are also asked in exams like Google APAC, coding contests and competititons like ACM-ICPC.",
+        "urlToImage":"https://pbs.twimg.com/profile_images/749503540184350720/WUQ7-NHv.jpg",
+        "url":"https://codingblocks.com/bootcamps/competitiveprogramming.html",
+        "date":"15-07-2017"  
+            },
+            {
+                "title":"PyDelhi meetup",
+                "description":"",
+                "urlToImage":"",
+                "url":"",
+                "date":"08-07-2017"            
+                }]
