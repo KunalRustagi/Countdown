@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.models.TechEvents;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,8 @@ public class TechMyEventsAdapter extends RecyclerView.Adapter<TechMyEventsAdapte
     public void onBindViewHolder(TechMyEventHolder holder, int position) {
            TechEvents myevent = myevents.get(position);
         holder.tvtitle.setText(myevent.getTitle());
+        holder.tvdate.setText(myevent.getDate());
+        Picasso.with(context).load(myevent.getUrlToImage()).into(holder.img);
     }
 
     @Override

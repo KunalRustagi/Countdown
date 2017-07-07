@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.models.Articles;
 import com.example.kunalrustagi.countdown.models.TechEvents;
@@ -38,7 +39,7 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
     }
 
     @Override
-    public void onBindViewHolder(TechEventHolder holder, int position) {
+    public void onBindViewHolder(final TechEventHolder holder, int position) {
         final TechEvents thisevent = techevents.get(position);
      //   Log.e("TA","onBind: "+thisevent);
         holder.tvtext.setText(thisevent.getTitle());
@@ -47,9 +48,11 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
             @Override
             public void onClick(View v) {
                 myevents.add(thisevent);
+                FragmentEvent.getArg(myevents,1);
                 Log.e("TEA","onClick" + myevents);
                 notifyDataSetChanged();
                 Toast.makeText(context,"Event Added",Toast.LENGTH_SHORT).show();
+                holder.flbtn.setVisibility(View.GONE);
             }
         });
     }

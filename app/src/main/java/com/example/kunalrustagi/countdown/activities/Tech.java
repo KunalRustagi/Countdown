@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.adapters.TechEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
@@ -208,19 +209,19 @@ public class Tech extends AppCompatActivity {
                 return itemView;
 
             }
-            if(a==1){
-              //  Log.e("Events","a=1");
-                View itemView = inflater.inflate(R.layout.fragment_tech_events,container,false);
-                RecyclerView rvevents=(RecyclerView)itemView.findViewById(R.id.rvevents);
-                events=new ArrayList<TechEvents>();
-                events.add(new TechEvents("India Hacks","IndiaHacks is the biggest confluence of developers across domains and interests under a single platform.It's your chance to demonstrate your programming skills, while competing with the best developers in the world.","https://hackerearth.global.ssl.fastly.net/static/hackerearth/images/indiahacks/2017/share_image.jpg","https://www.hackerearth.com/indiahacks-2017/","30-09-2017"));
-                rvevents.setLayoutManager(new LinearLayoutManager(getContext()));
-                TechEventsAdapter techEventsAdapter = new TechEventsAdapter(getContext(),events,myevents);
-                rvevents.setAdapter(techEventsAdapter);
-                event=techEventsAdapter.myEvents();
-                Log.e("a=1","event " + event);
-                return itemView;
-            }
+//            if(a==1){
+//              //  Log.e("Events","a=1");
+//                View itemView = inflater.inflate(R.layout.fragment_tech_events,container,false);
+//                RecyclerView rvevents=(RecyclerView)itemView.findViewById(R.id.rvevents);
+//                events=new ArrayList<TechEvents>();
+//                events.add(new TechEvents("India Hacks","IndiaHacks is the biggest confluence of developers across domains and interests under a single platform.It's your chance to demonstrate your programming skills, while competing with the best developers in the world.","https://hackerearth.global.ssl.fastly.net/static/hackerearth/images/indiahacks/2017/share_image.jpg","https://www.hackerearth.com/indiahacks-2017/","30-09-2017"));
+//                rvevents.setLayoutManager(new LinearLayoutManager(getContext()));
+//                TechEventsAdapter techEventsAdapter = new TechEventsAdapter(getContext(),events,myevents);
+//                rvevents.setAdapter(techEventsAdapter);
+//                event=techEventsAdapter.myEvents();
+//                Log.e("a=1","event " + event);
+//                return itemView;
+//            }
             if(a==3){
                 Log.d("TECH","myevents :" + myevents);
                 View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
@@ -234,9 +235,11 @@ public class Tech extends AppCompatActivity {
 //                    TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),tech);
 //                    rvmyevents.setAdapter(techMyEventsAdapter);
      //           }
-                ArrayList<TechEvents> tech=(ArrayList<TechEvents>)getArguments().getSerializable("arraylist");
-                Log.e("a=3","tech " + tech);
-                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),tech);
+           //     ArrayList<TechEvents> tech=(ArrayList<TechEvents>)getArguments().getSerializable("arraylist");
+           //     Log.e("a=3","tech " + tech);
+                ArrayList<TechEvents> tech = new ArrayList<>();
+                Log.e("a=3","Array that we sent" + FragmentEvent.setArg());
+                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),FragmentEvent.setArg());
                 rvmyevents.setAdapter(techMyEventsAdapter);
                // techMyEventsAdapter.updateList((ArrayList<TechEvents>)getArguments().getSerializable("arraylist"));
                 return itemView;
@@ -259,6 +262,9 @@ public class Tech extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            if(position==0){
+                return FragmentEvent.newInstance(position+1);
+            }
             Log.e("FragAdap","Fragment No :" + position+1);
             return PlaceholderFragment.newInstance(position + 1);
         }
