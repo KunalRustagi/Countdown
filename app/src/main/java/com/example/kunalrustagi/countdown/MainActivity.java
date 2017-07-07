@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.kunalrustagi.countdown.activities.Business;
 import com.example.kunalrustagi.countdown.activities.Tech;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(techIntent);
                         break;
                     case R.id.business:
-                        Intent busIntent = new Intent(MainActivity.this,Tech.class); //bUSINESS ACTIVITY
+                        Intent busIntent = new Intent(MainActivity.this,Business.class); //bUSINESS ACTIVITY
                         startActivity(busIntent);
                         break;
                     case R.id.entertainment:

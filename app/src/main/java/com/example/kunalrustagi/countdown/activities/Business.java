@@ -1,6 +1,5 @@
 package com.example.kunalrustagi.countdown.activities;
 
-import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,25 +22,15 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import com.ToxicBakery.viewpager.transforms.FlipHorizontalTransformer;
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
-import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
 import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
-import com.example.kunalrustagi.countdown.adapters.TechEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
+import com.example.kunalrustagi.countdown.api.BusinessAPI;
 import com.example.kunalrustagi.countdown.api.TechAPI;
 import com.example.kunalrustagi.countdown.models.Articles;
-import com.example.kunalrustagi.countdown.models.TechEvent;
-import com.example.kunalrustagi.countdown.models.TechEvents;
 import com.example.kunalrustagi.countdown.models.TechNews;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -50,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Tech extends AppCompatActivity {
+public class Business extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -67,11 +56,10 @@ public class Tech extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tech);
+        setContentView(R.layout.activity_business);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,8 +70,6 @@ public class Tech extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setPageTransformer(true, new FlipHorizontalTransformer());
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -97,14 +83,13 @@ public class Tech extends AppCompatActivity {
             }
         });
 
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tech, menu);
+        getMenuInflater().inflate(R.menu.menu_business, menu);
         return true;
     }
 
@@ -131,7 +116,7 @@ public class Tech extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String PAGE_NUMBER = "section_number";
+        private static final String PAGE_NUMBER  = "section_number";
 
         public PlaceholderFragment() {
         }
@@ -143,7 +128,7 @@ public class Tech extends AppCompatActivity {
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(PAGE_NUMBER, sectionNumber);
+            args.putInt(PAGE_NUMBER , sectionNumber);
             fragment.setArguments(args);
             return fragment;
         }
@@ -151,7 +136,6 @@ public class Tech extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-
             int a = getArguments().getInt(PAGE_NUMBER);
             if(a==2){
                 View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
@@ -164,53 +148,31 @@ public class Tech extends AppCompatActivity {
                         .baseUrl("https://newsapi.org/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                TechAPI techAPI = retrofit.create(TechAPI.class);
+                BusinessAPI techAPI = retrofit.create(BusinessAPI.class);
                 techAPI.getTechNews().enqueue(new Callback<TechNews>() {
                     @Override
                     public void onResponse(Call<TechNews> call, Response<TechNews> response) {
-                        Log.e("TECH","onResponse");
+
                         techNewsAdapter.updateTechNews(response.body());
                     }
 
                     @Override
                     public void onFailure(Call<TechNews> call, Throwable t) {
-                        Log.d("TECH","onFailure");
+
 
                     }
                 });
-                Retrofit retrofit1 = new Retrofit.Builder()
-                        .baseUrl("https://newsapi.org/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                TechAPI techAPI1 = retrofit1.create(TechAPI.class);
-                techAPI1.getTechNews().enqueue(new Callback<TechNews>() {
-                    @Override
-                    public void onResponse(Call<TechNews> call, Response<TechNews> response) {
-                       Log.e("TECH","onResponse");
-                        techNewsAdapter.updateTechNews(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<TechNews> call, Throwable t) {
-                        Log.d("TECH","onFailure");
-
-                    }
-                });
-
                 return itemView;
+        }
+        if(a==3){
+            View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
+            RecyclerView rvmyevents=(RecyclerView)itemView.findViewById(R.id.rvmyevents);
+            rvmyevents.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            }
-
-            if(a==3){
-
-                View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
-                RecyclerView rvmyevents=(RecyclerView)itemView.findViewById(R.id.rvmyevents);
-                rvmyevents.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),FragmentEvent.setArg());
-                rvmyevents.setAdapter(techMyEventsAdapter);
-                return itemView;
-            }
+            TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(), FragmentEvent.setArg());
+            rvmyevents.setAdapter(techMyEventsAdapter);
+            return itemView;
+        }
             return inflater.inflate(R.layout.fragment_my_events,container,false);
         }
     }
@@ -230,9 +192,8 @@ public class Tech extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position==0){
-                return FragmentEvent.newInstance(position+1,1);
+                return FragmentEvent.newInstance(position+1,2);
             }
-            Log.e("FragAdap","Fragment No :" + position+1);
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -248,7 +209,7 @@ public class Tech extends AppCompatActivity {
                 case 0:
                     return "UPCOMING";
                 case 1:
-                    return "TECH NEWS";
+                    return "NEWS";
                 case 2:
                     return "MY EVENTS";
             }
