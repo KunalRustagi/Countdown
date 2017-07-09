@@ -1,17 +1,19 @@
 package com.example.kunalrustagi.countdown;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.kunalrustagi.countdown.activities.Tech;
+import com.example.kunalrustagi.countdown.activities.DetailsActivity;
 import com.example.kunalrustagi.countdown.adapters.TechEventsAdapter;
-import com.example.kunalrustagi.countdown.models.TechEvent;
+import com.example.kunalrustagi.countdown.interfaces.OnButtonClickListener;
 import com.example.kunalrustagi.countdown.models.TechEvents;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class FragmentEvent extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static ArrayList<TechEvents>tech; private static int a;private static ArrayList<TechEvents>techfinal = new ArrayList<>();
-    private static ArrayList<TechEvents>techfinal1;
+
 
     // TODO: Rename and change types of parameters
     private int mParam1;
@@ -98,6 +100,9 @@ public class FragmentEvent extends Fragment {
             events.add(new TechEvents("Competetitive Coding Bootcamp", "Hone your Competittive Programming skills with our 1-week bootcamp on Competititive Coding. The aim of competitive programming is to write source code of computer programs which are able to solve given problems. A vast majority of problems appearing in programming contests are mathematical or logical in nature. Typical such tasks belong to one of the following categories: combinatorics, number theory, graph theory, geometry, string analysis and data structures. Such problems are also asked in exams like Google APAC, coding contests and competititons like ACM-ICPC.",
                     "https://pbs.twimg.com/profile_images/749503540184350720/WUQ7-NHv.jpg", "https://codingblocks.com/bootcamps/competitiveprogramming.html",
                     "15-07-2017"));
+            events.add(new TechEvents("Digital India Hackathon","ACM India is hosting a one-day Digital India event in conjunction with VLDB 2016 and Persistent Systems Ltd. We are very excited by the opportunities presented by the ambitious Digital India program launched by Hon. PM Narendra Modi. It is a grandeur vision of uniting a large nation like India via high-speed digital highways. 1.2 billion Indians will be connected together and will have access to open information. Data takes the center stage in this vision due to the sheer size of India’s population. With ~1 billion Aadhar cards, 200+ million Jan-Dhan Yojna accounts, the magnitude of India-scale data is humongous. Such large data processing will need specialized big data and analytics expertise.",
+                    "http://digitalindiahack.org/assets/images/logo.png","https://www.hackerearth.com/sprints/digital-india-hackathon/","21-07-2017"));
+            //events.add(new TechEvents())
         }
         else if(mParam2==2){
             events.add(new TechEvents("Impact of GST on Startups | Startup Saturday","The startup boom in India has begun full flow. We rank third globally with over 4,200 startups and the number is set to increase to 10,000 by 2020. The sector employs over 85,000 professionals and is proving to be an important growth engine for India’s economy and society. With around three startups being born every day in the country, one just has to ask – how will the new tax laws under goods and services tax (GST) affect a sector that is probably the next best thing since the internet boom of the 90s?",
@@ -112,8 +117,20 @@ public class FragmentEvent extends Fragment {
 
         }
         rvevents.setLayoutManager(new LinearLayoutManager(getContext()));
-        TechEventsAdapter techEventsAdapter = new TechEventsAdapter(getContext(),events,myevents);
-        rvevents.setAdapter(techEventsAdapter);
+        TechEventsAdapter techEventsAdapter = new TechEventsAdapter(getContext(), events, myevents, new OnButtonClickListener() {
+            @Override
+            public void onButtonClick(TechEvents tech) {
+                Log.e("FRAGMENTEVENT","onButtonClick :");
+                Intent eventdetails = new Intent(getContext(), DetailsActivity.class);
+                eventdetails.putExtra("urlToImage",tech.getUrlToImage());
+                eventdetails.putExtra("description",tech.getDescription());
+                eventdetails.putExtra("url",tech.getUrl());
+                eventdetails.putExtra("date",tech.getDate());
+                eventdetails.putExtra("title",tech.getTitle());
+                startActivity(eventdetails);
+            }
+        });
+                rvevents.setAdapter(techEventsAdapter);
         return itemView;
     }
 

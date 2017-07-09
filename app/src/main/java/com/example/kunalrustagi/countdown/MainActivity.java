@@ -1,6 +1,8 @@
 package com.example.kunalrustagi.countdown;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.example.kunalrustagi.countdown.activities.Business;
 import com.example.kunalrustagi.countdown.activities.Tech;
+import com.example.kunalrustagi.countdown.activities.Techno;
 
 public class MainActivity extends AppCompatActivity {
    LinearLayout tech,business,entertainment;
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                 int cid = v.getId();
                 switch (cid){
                     case R.id.tech :
-                        Intent techIntent = new Intent(MainActivity.this,Tech.class);
+                        Intent techIntent = new Intent(MainActivity.this,Techno.class);
                         startActivity(techIntent);
                         break;
                     case R.id.business:

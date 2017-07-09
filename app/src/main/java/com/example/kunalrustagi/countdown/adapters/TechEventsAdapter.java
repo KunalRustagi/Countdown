@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kunalrustagi.countdown.FragmentEvent;
+import com.example.kunalrustagi.countdown.interfaces.OnButtonClickListener;
 import com.example.kunalrustagi.countdown.R;
-import com.example.kunalrustagi.countdown.models.Articles;
 import com.example.kunalrustagi.countdown.models.TechEvents;
 import com.squareup.picasso.Picasso;
 
@@ -24,12 +24,13 @@ import java.util.ArrayList;
  */
 
 public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.TechEventHolder> {
-    Context context;ArrayList<TechEvents> techevents;public ArrayList<TechEvents>myevents;
+    Context context;ArrayList<TechEvents> techevents;public ArrayList<TechEvents>myevents;private OnButtonClickListener obcl;
 
-    public TechEventsAdapter(Context context, ArrayList<TechEvents> techevents,ArrayList<TechEvents>myevents) {
+    public TechEventsAdapter(Context context, ArrayList<TechEvents> techevents,ArrayList<TechEvents>myevents,OnButtonClickListener obcl) {
         this.context = context;
         this.techevents = techevents;
         this.myevents=myevents;
+        this.obcl=obcl;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
     }
 
     @Override
-    public void onBindViewHolder(final TechEventHolder holder, int position) {
+    public void onBindViewHolder(final TechEventHolder holder, final int position) {
         final TechEvents thisevent = techevents.get(position);
      //   Log.e("TA","onBind: "+thisevent);
         holder.tvtext.setText(thisevent.getTitle());
@@ -55,10 +56,15 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
                 holder.flbtn.setVisibility(View.GONE);
             }
         });
-    }
-    public ArrayList<TechEvents> myEvents(){
-        Log.e("myEven","Array after Clicking " + myevents);
-        return myevents;
+        Log.e("EventsAdap","View Id" + holder.rootView);
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("EventsAdap","OnClick" + holder.rootView);
+                //      Log.e("TechEvents","onButtonClick :");
+               obcl.onButtonClick(thisevent);
+            }
+        });
     }
 
     @Override
@@ -67,12 +73,13 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
     }
 
     class TechEventHolder extends RecyclerView.ViewHolder{
-        TextView tvtext;ImageView img;FloatingActionButton flbtn;
+        TextView tvtext;ImageView img;FloatingActionButton flbtn;View rootView;
         TechEventHolder(View itemView){
             super(itemView);
             tvtext=(TextView)itemView.findViewById(R.id.tvtext);
             img=(ImageView)itemView.findViewById(R.id.img);
             flbtn=(FloatingActionButton)itemView.findViewById(R.id.flbtn);
+            rootView=itemView;
 
         }
     }

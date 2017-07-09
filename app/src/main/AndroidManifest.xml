@@ -25,6 +25,12 @@
         <activity
             android:name=".activities.Business"
             android:label="@string/title_activity_business"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.DetailsActivity" />
+        <activity android:name=".activities.NewsActivity" />
+        <activity
+            android:name=".activities.Techno"
+            android:label="@string/title_activity_techno"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

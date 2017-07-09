@@ -1,5 +1,6 @@
 package com.example.kunalrustagi.countdown.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,7 @@ import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
 import com.example.kunalrustagi.countdown.api.BusinessAPI;
 import com.example.kunalrustagi.countdown.api.TechAPI;
+import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
 import com.example.kunalrustagi.countdown.models.TechNews;
 
@@ -142,7 +144,17 @@ public class Business extends AppCompatActivity {
                 RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
                 rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
                 final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
-                        new TechNews("","",new ArrayList<Articles>()));                             //Non-static cannot be referenced from a static context
+                        new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
+                    @Override
+                    public void onViewClick(Articles articles) {
+                        Intent newsintent = new Intent(getContext(),NewsActivity.class);
+                        newsintent.putExtra("urlToImage",articles.getUrlToImage());
+                        newsintent.putExtra("title",articles.getTitle());
+                        newsintent.putExtra("description",articles.getDescription());
+                        startActivity(newsintent);
+
+                    }
+                });                             //Non-static cannot be referenced from a static context
                 rvtech.setAdapter(techNewsAdapter);                                                 //How come it is static
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://newsapi.org/")

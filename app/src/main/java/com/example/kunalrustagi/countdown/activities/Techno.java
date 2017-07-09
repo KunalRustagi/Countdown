@@ -1,6 +1,5 @@
 package com.example.kunalrustagi.countdown.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,27 +23,16 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-import com.ToxicBakery.viewpager.transforms.FlipHorizontalTransformer;
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
-import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
 import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
-import com.example.kunalrustagi.countdown.adapters.TechEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
 import com.example.kunalrustagi.countdown.api.BusinessAPI;
 import com.example.kunalrustagi.countdown.api.TechAPI;
 import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
-import com.example.kunalrustagi.countdown.models.TechEvent;
-import com.example.kunalrustagi.countdown.models.TechEvents;
 import com.example.kunalrustagi.countdown.models.TechNews;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -53,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Tech extends AppCompatActivity {
+public class Techno extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -63,30 +51,27 @@ public class Tech extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private Techno.SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tech);
+        setContentView(R.layout.activity_techno);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new Techno.SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setPageTransformer(true, new FlipHorizontalTransformer());
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -100,14 +85,13 @@ public class Tech extends AppCompatActivity {
             }
         });
 
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tech, menu);
+        getMenuInflater().inflate(R.menu.menu_techno, menu);
         return true;
     }
 
@@ -125,94 +109,91 @@ public class Tech extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+//
+//    /**
+//     * A placeholder fragment containing a simple view.
+//     */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String PAGE_NUMBER = "section_number";
+    /**
+     * The fragment argument representing the section number for this
+     * fragment.
+     */
+    private static final String PAGE_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(PAGE_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            int a = getArguments().getInt(PAGE_NUMBER);
-          //  Log.d(TAG, "onCreateView: ");
-            if(a==2){
-                View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
-                RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
-                rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
-                final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
-                        new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
-                    @Override
-                    public void onViewClick(Articles articles) {
-                        Intent newsintent = new Intent(getContext(),NewsActivity.class);
-                        newsintent.putExtra("urlToImage",articles.getUrlToImage());
-                        newsintent.putExtra("title",articles.getTitle());
-                        newsintent.putExtra("description",articles.getDescription());
-                        startActivity(newsintent);
-
-                    }
-                });                             //Non-static cannot be referenced from a static context
-                rvtech.setAdapter(techNewsAdapter);                                                 //How come it is static
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://newsapi.org/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                TechAPI techAPI = retrofit.create(TechAPI.class);
-                techAPI.getTechNews().enqueue(new Callback<TechNews>() {
-                    @Override
-                    public void onResponse(Call<TechNews> call, Response<TechNews> response) {
-                        Log.e("OnResponse","TechNews " + response.body());
-                        techNewsAdapter.updateTechNews(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<TechNews> call, Throwable t) {
-
-
-                    }
-                });
-                return itemView;
-            }
-
-            if(a==3){
-
-                View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
-                RecyclerView rvmyevents=(RecyclerView)itemView.findViewById(R.id.rvmyevents);
-                rvmyevents.setLayoutManager(new LinearLayoutManager(getContext()));
-                
-                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),FragmentEvent.setArg());
-                rvmyevents.setAdapter(techMyEventsAdapter);
-                return itemView;
-            }
-            return inflater.inflate(R.layout.fragment_my_events,container,false);
-        }
+    public PlaceholderFragment() {
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+    //
+//        /**
+//         * Returns a new instance of this fragment for the given section
+//         * number.
+//         */
+    public static PlaceholderFragment newInstance(int sectionNumber) {
+        Techno.PlaceholderFragment fragment = new Techno.PlaceholderFragment();
+        Bundle args = new Bundle();
+        args.putInt(PAGE_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    //
+//        @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        int a = getArguments().getInt(PAGE_NUMBER);
+        //  Log.d(TAG, "onCreateView: ");
+        if(a==2){
+            View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
+            RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
+            rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
+            final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
+                    new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
+                @Override
+                public void onViewClick(Articles articles) {
+                    Intent newsintent = new Intent(getContext(),NewsActivity.class);
+                    newsintent.putExtra("urlToImage",articles.getUrlToImage());
+                    newsintent.putExtra("title",articles.getTitle());
+                    newsintent.putExtra("description",articles.getDescription());
+                    startActivity(newsintent);
+
+                }
+            });                             //Non-static cannot be referenced from a static context
+            rvtech.setAdapter(techNewsAdapter);                                                 //How come it is static
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://newsapi.org/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            TechAPI techAPI = retrofit.create(TechAPI.class);
+            techAPI.getTechNews().enqueue(new Callback<TechNews>() {
+                @Override
+                public void onResponse(Call<TechNews> call, Response<TechNews> response) {
+                    Log.e("OnResponse","TechNews " + response.body());
+                    techNewsAdapter.updateTechNews(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<TechNews> call, Throwable t) {
+
+
+                }
+            });
+            return itemView;
+        }
+        if(a==3){
+
+            View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
+            RecyclerView rvmyevents=(RecyclerView)itemView.findViewById(R.id.rvmyevents);
+            rvmyevents.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),FragmentEvent.setArg());
+            rvmyevents.setAdapter(techMyEventsAdapter);
+            return itemView;
+        }
+            return inflater.inflate(R.layout.fragment_my_events,container,false);
+        }
+
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -226,7 +207,6 @@ public class Tech extends AppCompatActivity {
             if(position==0){
                 return FragmentEvent.newInstance(position+1,1);
             }
-           // Log.e("FragAdap","Fragment No :" + position+1);
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -236,17 +216,20 @@ public class Tech extends AppCompatActivity {
             return 3;
         }
 
+        //
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return "UPCOMING";
                 case 1:
-                    return "TECH NEWS";
+                    return "NEWS";
                 case 2:
                     return "MY EVENTS";
             }
             return null;
         }
     }
+
 }
+
