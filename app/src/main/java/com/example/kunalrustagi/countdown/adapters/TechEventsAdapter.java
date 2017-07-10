@@ -1,6 +1,7 @@
 package com.example.kunalrustagi.countdown.adapters;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
                 Log.e("TEA","onClick" + myevents);
                 notifyDataSetChanged();
                 Toast.makeText(context,"Event Added",Toast.LENGTH_SHORT).show();
-                holder.flbtn.setVisibility(View.GONE);
+                //holder.flbtn.setVisibility(View.GONE);
             }
         });
         Log.e("EventsAdap","View Id" + holder.rootView);
@@ -73,12 +74,12 @@ public class TechEventsAdapter extends RecyclerView.Adapter<TechEventsAdapter.Te
     }
 
     class TechEventHolder extends RecyclerView.ViewHolder{
-        TextView tvtext;ImageView img;FloatingActionButton flbtn;View rootView;
+        TextView tvtext;ImageView img;ImageView flbtn;View rootView;
         TechEventHolder(View itemView){
             super(itemView);
             tvtext=(TextView)itemView.findViewById(R.id.tvtext);
             img=(ImageView)itemView.findViewById(R.id.img);
-            flbtn=(FloatingActionButton)itemView.findViewById(R.id.flbtn);
+            flbtn=(ImageView) itemView.findViewById(R.id.imgbtn);
             rootView=itemView;
 
         }

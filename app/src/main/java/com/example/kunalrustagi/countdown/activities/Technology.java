@@ -22,13 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
-import com.example.kunalrustagi.countdown.api.BusinessAPI;
 import com.example.kunalrustagi.countdown.api.TechAPI;
 import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
@@ -42,7 +40,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Techno extends AppCompatActivity {
+public class Technology extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -77,14 +75,7 @@ public class Techno extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
     }
 
@@ -130,7 +121,7 @@ public class Techno extends AppCompatActivity {
 //         * number.
 //         */
     public static PlaceholderFragment newInstance(int sectionNumber) {
-        Techno.PlaceholderFragment fragment = new Techno.PlaceholderFragment();
+        Technology.PlaceholderFragment fragment = new Technology.PlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(PAGE_NUMBER, sectionNumber);
         fragment.setArguments(args);

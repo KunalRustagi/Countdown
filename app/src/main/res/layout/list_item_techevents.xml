@@ -23,12 +23,14 @@
         android:text="This is just random text"
         android:id="@+id/tvtext"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/flbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add" />
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/add"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/imgbtn"
+        />
 
 
 </LinearLayout>
