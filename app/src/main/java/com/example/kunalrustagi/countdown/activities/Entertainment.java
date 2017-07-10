@@ -1,6 +1,5 @@
 package com.example.kunalrustagi.countdown.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,30 +21,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ToxicBakery.viewpager.transforms.FlipHorizontalTransformer;
-import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
-import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
 import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
-import com.example.kunalrustagi.countdown.adapters.TechEventsAdapter;
+import com.example.kunalrustagi.countdown.adapters.EntertainmentAdapter;
+import com.example.kunalrustagi.countdown.adapters.MoviesAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
-import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
-import com.example.kunalrustagi.countdown.api.BusinessAPI;
-import com.example.kunalrustagi.countdown.api.TechAPI;
+import com.example.kunalrustagi.countdown.api.EntertainmentAPI;
+import com.example.kunalrustagi.countdown.api.EntertainmentSearchAPI;
 import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
-import com.example.kunalrustagi.countdown.models.TechEvent;
-import com.example.kunalrustagi.countdown.models.TechEvents;
+import com.example.kunalrustagi.countdown.models.Results;
+import com.example.kunalrustagi.countdown.models.Search;
 import com.example.kunalrustagi.countdown.models.TechNews;
+import com.example.kunalrustagi.countdown.models.Url;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -54,7 +47,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Tech extends AppCompatActivity {
+public class Entertainment extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -71,11 +64,10 @@ public class Tech extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tech);
+        setContentView(R.layout.activity_entertainment);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,8 +78,6 @@ public class Tech extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setPageTransformer(true, new FlipHorizontalTransformer());
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -101,14 +91,13 @@ public class Tech extends AppCompatActivity {
             }
         });
 
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tech, menu);
+        getMenuInflater().inflate(R.menu.menu_entertainment, menu);
         return true;
     }
 
@@ -155,59 +144,119 @@ public class Tech extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-
             int a = getArguments().getInt(PAGE_NUMBER);
-          //  Log.d(TAG, "onCreateView: ");
             if(a==2){
-                final View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
-                RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
-                rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
-                final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
-                        new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
-                    @Override
-                    public void onViewClick(Articles articles) {
-                        Intent newsintent = new Intent(getContext(),NewsActivity.class);
-                        newsintent.putExtra("urlToImage",articles.getUrlToImage());
-                        newsintent.putExtra("title",articles.getTitle());
-                        newsintent.putExtra("description",articles.getDescription());
-                        startActivity(newsintent);
-
-                    }
-                });                             //Non-static cannot be referenced from a static context
-                rvtech.setAdapter(techNewsAdapter);                                                 //How come it is static
+                View itemView = inflater.inflate(R.layout.activity_entertainment_news,container,false);
+                RecyclerView rventertainmentnews = (RecyclerView)itemView.findViewById(R.id.rventnews);
+                final ProgressBar progbar = (ProgressBar)itemView.findViewById(R.id.progbar);
+                progbar.setVisibility(View.VISIBLE);
+                rventertainmentnews.setLayoutManager(new LinearLayoutManager(getContext()));
+                final EntertainmentAdapter entertainmentAdapter = new EntertainmentAdapter(getContext(),
+                        new TechNews("", "", new ArrayList<Articles>()),
+                        new OnViewClickListener() {
+                            @Override
+                            public void onViewClick(Articles articles) {
+                                Intent newsintent = new Intent(getContext(),NewsActivity.class);
+                                newsintent.putExtra("urlToImage",articles.getUrlToImage());
+                                newsintent.putExtra("title",articles.getTitle());
+                                newsintent.putExtra("description",articles.getDescription());
+                                newsintent.putExtra("url",articles.getUrl());
+                                startActivity(newsintent);
+                            }
+                        });
+                rventertainmentnews.setAdapter(entertainmentAdapter);
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://newsapi.org/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                TechAPI techAPI = retrofit.create(TechAPI.class);
-                techAPI.getTechNews().enqueue(new Callback<TechNews>() {
+                EntertainmentAPI entertainmentAPI =retrofit.create(EntertainmentAPI.class);
+                entertainmentAPI.getEntertainmentNews().enqueue(new Callback<TechNews>() {
                     @Override
                     public void onResponse(Call<TechNews> call, Response<TechNews> response) {
-                        Log.e("OnResponse","TechNews " + response.body());
-                        techNewsAdapter.updateTechNews(response.body(),(ProgressBar) itemView.findViewById(R.id.progbar));
+                        entertainmentAdapter.updateTechNews(response.body(),progbar);
                     }
 
                     @Override
                     public void onFailure(Call<TechNews> call, Throwable t) {
 
-
                     }
                 });
                 return itemView;
-            }
 
-            if(a==3){
+            }
+            if(a==4){
 
                 View itemView = inflater.inflate(R.layout.fragment_my_events,container,false);
                 RecyclerView rvmyevents=(RecyclerView)itemView.findViewById(R.id.rvmyevents);
                 rvmyevents.setLayoutManager(new LinearLayoutManager(getContext()));
-                
-                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(),FragmentEvent.setArg());
+
+                TechMyEventsAdapter techMyEventsAdapter=new TechMyEventsAdapter(getContext(), FragmentEvent.setArg());
                 rvmyevents.setAdapter(techMyEventsAdapter);
                 return itemView;
             }
+            if(a==3){
+                  final String api_key = "cb29858d906bc704868ff43200a96d0e";
+                View itemView = inflater.inflate(R.layout.layout_movies,container,false);
+                RecyclerView rventertainment = (RecyclerView)itemView.findViewById(R.id.rvmovies);
+                final ProgressBar progressBar =(ProgressBar)itemView.findViewById(R.id.progbar);
+                progressBar.setVisibility(View.INVISIBLE);
+                final EditText etsearch=(EditText)itemView.findViewById(R.id.etquery);
+                TextView go = (TextView)itemView.findViewById(R.id.gobtn);
+                rventertainment.setLayoutManager(new LinearLayoutManager(getContext()));
+                final MoviesAdapter moviesAdapter = new MoviesAdapter(getContext(),new Search(0,0,new ArrayList<Results>()));
+                rventertainment.setAdapter(moviesAdapter);
+                Retrofit retrofit1 = new Retrofit.Builder()
+                                .baseUrl("https://api.themoviedb.org/3/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        EntertainmentSearchAPI searchAPI = retrofit1.create(EntertainmentSearchAPI.class);
+                        searchAPI.getCompleteUrl(api_key).enqueue(new Callback<Url>() {
+                            @Override
+                            public void onResponse(Call<Url> call, Response<Url> response) {
+                                MoviesAdapter.urlupdated(response.body());
+                                Log.e("MoviesAdapter","OnResponse URL" + response.body());
+                                moviesAdapter.urlupdated(response.body());
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Url> call, Throwable t) {
+
+                            }
+                        });
+              final    Retrofit retrofit=new Retrofit.Builder()
+                        .baseUrl("https://api.themoviedb.org/3/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                final EntertainmentSearchAPI entertainmentSearchAPI = retrofit.create(EntertainmentSearchAPI.class);
+                go.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String query = etsearch.getText().toString();
+                        etsearch.setText("");
+                        progressBar.setVisibility(View.VISIBLE);
+                        entertainmentSearchAPI.getResults(api_key,query).enqueue(new Callback<Search>() {
+                            @Override
+                            public void onResponse(Call<Search> call, Response<Search> response) {
+                                moviesAdapter.updateList(response.body(),progressBar);
+                                Log.e("MOVIE API","OnResponse"+response.body());
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Search> call, Throwable t) {
+                                     Log.e("MOVIE","OnFailure");
+                            }
+                        });
+                    }
+                });
+                 return itemView;
+
+            }
             return inflater.inflate(R.layout.fragment_my_events,container,false);
         }
+
+
     }
 
     /**
@@ -225,16 +274,15 @@ public class Tech extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position==0){
-                return FragmentEvent.newInstance(position+1,1);
+                return FragmentEvent.newInstance(position+1,3);
             }
-           // Log.e("FragAdap","Fragment No :" + position+1);
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -243,8 +291,10 @@ public class Tech extends AppCompatActivity {
                 case 0:
                     return "UPCOMING";
                 case 1:
-                    return "TECH NEWS";
+                    return "NEWS";
                 case 2:
+                    return "MOVIES";
+                case 3:
                     return "MY EVENTS";
             }
             return null;

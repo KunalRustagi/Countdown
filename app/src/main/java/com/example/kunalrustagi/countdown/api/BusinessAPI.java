@@ -10,6 +10,6 @@ import retrofit2.http.GET;
  */
 
 public interface BusinessAPI {
-    @GET("v1/articles?source=financial-times&sortBy=top&apiKey=f363fd39b50e4c50b3a951858eb7a264")
+    @GET("v1/articles?source=bloomberg&sortBy=top&apiKey=f363fd39b50e4c50b3a951858eb7a264")
     Call<TechNews> getTechNews();
 }

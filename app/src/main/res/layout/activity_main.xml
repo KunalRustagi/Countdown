@@ -32,7 +32,7 @@
             android:id="@+id/tech"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/shape">
 
             <ImageView
@@ -76,7 +76,7 @@
             </LinearLayout>
         </LinearLayout>
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:id="@+id/entertainment"
         android:layout_marginTop="45dp"
@@ -97,7 +97,7 @@
             android:textColor="@android:color/background_light"
             android:text="ENTERTAINMENT"
             android:gravity="center_horizontal"
-            android:textSize="17sp"
+            android:textSize="14sp"
             android:padding="5dp"/>
 
     </LinearLayout>

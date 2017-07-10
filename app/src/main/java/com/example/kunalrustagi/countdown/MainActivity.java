@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.kunalrustagi.countdown.activities.Business;
+import com.example.kunalrustagi.countdown.activities.Entertainment;
 import com.example.kunalrustagi.countdown.activities.Tech;
 import com.example.kunalrustagi.countdown.activities.Techno;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(busIntent);
                         break;
                     case R.id.entertainment:
-                        Intent entIntent = new Intent(MainActivity.this,Tech.class); //ENTERTAINMENT ACTIVITY
+                        Intent entIntent = new Intent(MainActivity.this,Entertainment.class); //ENTERTAINMENT ACTIVITY
                         startActivity(entIntent);
                         break;
                 }

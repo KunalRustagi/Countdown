@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.kunalrustagi.countdown.interfaces.OnButtonClickListener;
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
@@ -20,15 +19,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by kunalrustagi on 07/07/17.
+ * Created by kunalrustagi on 09/07/17.
  */
 
-public class TechNewsAdapter extends RecyclerView.Adapter<TechNewsAdapter.TechHolder>{
+public class EntertainmentAdapter extends RecyclerView.Adapter<EntertainmentAdapter.EntertainmentHolder> {
     Context context;ArrayList<Articles> articles; OnViewClickListener ovcl;
-    public TechNewsAdapter(Context context,TechNews news,OnViewClickListener ovcl){
-        this.context=context;
-        this.articles=news.getArticles();
-        this.ovcl=ovcl;
+
+    public EntertainmentAdapter(Context context, TechNews news, OnViewClickListener ovcl) {
+        this.context = context;
+        this.articles = news.getArticles();
+        this.ovcl = ovcl;
     }
     public void updateTechNews(TechNews news, ProgressBar progbar){
         this.articles=news.getArticles();
@@ -36,23 +36,22 @@ public class TechNewsAdapter extends RecyclerView.Adapter<TechNewsAdapter.TechHo
         progbar.setVisibility(View.GONE);
         notifyDataSetChanged();
     }
+
     @Override
-    public TechHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EntertainmentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return new TechHolder(inflater.inflate(R.layout.list_item_technews,parent,false));
+        return new EntertainmentHolder(inflater.inflate(R.layout.list_item_technews,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(final TechHolder holder, int position) {
+    public void onBindViewHolder(final EntertainmentHolder holder, int position) {
         final Articles thisarticle = articles.get(position);
         holder.tvtext.setText(thisarticle.getTitle());
         Picasso.with(context).load(thisarticle.getUrlToImage()).into(holder.img);
-        Log.e("NewsAdap","View Id" + holder.rootView);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("NewsAdap","OnClick" + holder.rootView);
-       //         Log.e("TechNews","onViewClick :");
+
                 ovcl.onViewClick(thisarticle);
             }
         });
@@ -63,9 +62,9 @@ public class TechNewsAdapter extends RecyclerView.Adapter<TechNewsAdapter.TechHo
         return articles.size();
     }
 
-    class TechHolder extends RecyclerView.ViewHolder{
+    class EntertainmentHolder extends RecyclerView.ViewHolder{
         TextView tvtext;ImageView img;View rootView;
-        TechHolder(View itemView){
+        EntertainmentHolder(View itemView){
             super(itemView);
             tvtext=(TextView)itemView.findViewById(R.id.tvtext);
             img=(ImageView)itemView.findViewById(R.id.img);

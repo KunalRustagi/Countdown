@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.kunalrustagi.countdown.FragmentEvent;
@@ -51,7 +52,7 @@ public class Techno extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private Techno.SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -67,7 +68,7 @@ public class Techno extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new Techno.SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -145,6 +146,8 @@ public class Techno extends AppCompatActivity {
         if(a==2){
             View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
             RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
+            final ProgressBar progbar = (ProgressBar)itemView.findViewById(R.id.progbar);
+            progbar.setVisibility(View.VISIBLE);
             rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
             final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
                     new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
@@ -154,6 +157,7 @@ public class Techno extends AppCompatActivity {
                     newsintent.putExtra("urlToImage",articles.getUrlToImage());
                     newsintent.putExtra("title",articles.getTitle());
                     newsintent.putExtra("description",articles.getDescription());
+                    newsintent.putExtra("url",articles.getUrl());
                     startActivity(newsintent);
 
                 }
@@ -168,7 +172,7 @@ public class Techno extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<TechNews> call, Response<TechNews> response) {
                     Log.e("OnResponse","TechNews " + response.body());
-                    techNewsAdapter.updateTechNews(response.body());
+                    techNewsAdapter.updateTechNews(response.body(),progbar);
                 }
 
                 @Override

@@ -20,15 +20,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.example.kunalrustagi.countdown.FragmentEvent;
 import com.example.kunalrustagi.countdown.R;
 import com.example.kunalrustagi.countdown.adapters.TechMyEventsAdapter;
 import com.example.kunalrustagi.countdown.adapters.TechNewsAdapter;
 import com.example.kunalrustagi.countdown.api.BusinessAPI;
-import com.example.kunalrustagi.countdown.api.TechAPI;
 import com.example.kunalrustagi.countdown.interfaces.OnViewClickListener;
 import com.example.kunalrustagi.countdown.models.Articles;
 import com.example.kunalrustagi.countdown.models.TechNews;
@@ -142,13 +140,15 @@ public class Business extends AppCompatActivity {
             if(a==2){
                 View itemView = inflater.inflate(R.layout.fragment_tech,container,false);
                 RecyclerView rvtech = (RecyclerView)itemView.findViewById(R.id.rvtechnews);
+                final ProgressBar progbar = (ProgressBar)itemView.findViewById(R.id.progbar);
+                progbar.setVisibility(View.VISIBLE);
                 rvtech.setLayoutManager(new LinearLayoutManager(getContext()));
                 final TechNewsAdapter techNewsAdapter = new TechNewsAdapter(getContext(),           //Why cant MainActivity.this be used here
                         new TechNews("", "", new ArrayList<Articles>()), new OnViewClickListener() {
                     @Override
                     public void onViewClick(Articles articles) {
                         Intent newsintent = new Intent(getContext(),NewsActivity.class);
-                        newsintent.putExtra("urlToImage",articles.getUrlToImage());
+                        newsintent.putExtra("url",articles.getUrl());
                         newsintent.putExtra("title",articles.getTitle());
                         newsintent.putExtra("description",articles.getDescription());
                         startActivity(newsintent);
@@ -164,13 +164,13 @@ public class Business extends AppCompatActivity {
                 techAPI.getTechNews().enqueue(new Callback<TechNews>() {
                     @Override
                     public void onResponse(Call<TechNews> call, Response<TechNews> response) {
-
-                        techNewsAdapter.updateTechNews(response.body());
+                        Log.e("Business","onResponse"+response.body());
+                        techNewsAdapter.updateTechNews(response.body(),progbar);
                     }
 
                     @Override
                     public void onFailure(Call<TechNews> call, Throwable t) {
-
+                        Log.e("Business","onFailure");
 
                     }
                 });

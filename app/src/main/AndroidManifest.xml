@@ -31,6 +31,10 @@
         <activity
             android:name=".activities.Techno"
             android:label="@string/title_activity_techno"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.Entertainment"
+            android:label="@string/title_activity_entertainment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
