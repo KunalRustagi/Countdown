@@ -1,11 +1,14 @@
 package com.example.kunalrustagi.countdown.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kunalrustagi.countdown.MainActivity;
 import com.example.kunalrustagi.countdown.R;
@@ -28,13 +31,16 @@ public class DetailsActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.textdescription)).setText(description);
         ((TextView)findViewById(R.id.tvurl)).setText(url);
         ((TextView)findViewById(R.id.texttitle)).setText(title);
-        ((ImageView)findViewById(R.id.img)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)findViewById(R.id.tvurl)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent webintent =new Intent(DetailsActivity.this,EventDetails.class);
-//                webintent.putExtra("url",url);
-//                startActivity(webintent);
-//                finish();
+                String linkToGo=url;
+                try {
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(linkToGo));
+                    startActivity(i);
+                } catch (ActivityNotFoundException anfe) {
+                    Toast.makeText(DetailsActivity.this, "Activity not found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
