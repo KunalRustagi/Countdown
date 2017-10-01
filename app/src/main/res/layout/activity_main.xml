@@ -23,9 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:padding="8dp"
+
+            android:paddingTop="35dp"
             android:text="UPDATE DESK"
             android:textColor="@android:color/background_light"
             android:textSize="30sp"
