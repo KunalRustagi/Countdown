@@ -44,9 +44,7 @@ public class FragmentEvent extends Fragment {
     public static void getArg(ArrayList<TechEvents>techno,int n){
         tech=techno; tech.addAll(techfinal);
         techfinal=techno;
-      //  for(int i = 1;i<techno.size();i++){
 
-     //   }
         a=n;
     }
     public static  ArrayList<TechEvents> setArg(){
@@ -55,14 +53,7 @@ public class FragmentEvent extends Fragment {
         }
         return new ArrayList<TechEvents>();
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentEvent.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static FragmentEvent newInstance(int param1,int param2) {
         FragmentEvent fragment = new FragmentEvent();

@@ -25,10 +25,7 @@ public class TechMyEventsAdapter extends RecyclerView.Adapter<TechMyEventsAdapte
         this.context = context;
         this.myevents = myevents;
     }
-    public void updateList(ArrayList<TechEvents> myevents){
-        this.myevents=myevents;
-        notifyDataSetChanged();
-    }
+
 
     @Override
     public TechMyEventHolder onCreateViewHolder(ViewGroup parent, int viewType) {

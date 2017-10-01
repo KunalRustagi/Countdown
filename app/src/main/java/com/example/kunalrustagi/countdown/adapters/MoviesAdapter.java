@@ -55,11 +55,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
 
 
         Results thisresult=results.get(position);
-//        if(urls.getImages().getPoster_sizes().size()!=0){
-//        String baseurl=urls.getImages().getBase_url();
-//        String postersize=urls.getImages().getPoster_sizes().get(0);
-//        String completeurl=baseurl+"/"+postersize;
-//            completeurl=completeurl+thisresult.getPoster_path();
+
             Picasso.with(context).load(baseUrl+thisresult.getPoster_path()).into(holder.img);
 
 
